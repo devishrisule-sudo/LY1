@@ -3,6 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <title>One to One Correspondence</title>
 
 <style>
@@ -62,15 +63,15 @@ body{
 }
 
 .left-image{
-    width:70px;
-    height:70px;
+    width:80px;
+    height:80px;
     object-fit:contain;
     cursor:pointer;
 }
 
 .right-image{
-    width:60px;
-    height:60px;
+    width:65px;
+    height:65px;
     object-fit:contain;
     cursor:pointer;
 }
@@ -132,6 +133,21 @@ button{
     background:green;
     color:white;
     font-size:18px;
+    cursor:pointer;
+}
+
+@media(max-width:600px){
+
+    .left-image{
+        width:65px;
+        height:65px;
+    }
+
+    .right-image{
+        width:50px;
+        height:50px;
+    }
+
 }
 
 </style>
@@ -167,8 +183,8 @@ Match the objects by tracing a line.
 
 </div>
 
-<audio id="correctSound" src="./assets/correct.mp3"></audio>
-<audio id="wrongSound" src="./assets/wrong.mp3"></audio>
+<audio id="correctSound" src="assets/correct.mp3"></audio>
+<audio id="wrongSound" src="assets/wrong.mp3"></audio>
 
 <script>
 
@@ -240,7 +256,7 @@ function loadQuestion(){
         <div class="row">
 
         <img
-        src="./assets/${q.left}"
+        src="assets/${q.left}"
         class="left-image"
         id="left${i}"
         onclick="selectObject(${i})">
@@ -255,7 +271,7 @@ function loadQuestion(){
         </div>
 
         <img
-        src="./assets/${q.right}"
+        src="assets/${q.right}"
         class="right-image"
         id="right${i}"
         onclick="matchObject(${i})">
