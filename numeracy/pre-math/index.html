@@ -1,4 +1,3 @@
-```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -20,19 +19,22 @@ body{
 #splash{
     position:fixed;
     inset:0;
-    background:white;
-    border:5px solid yellow;
+    background:#ffffff;
+    border:5px solid #ffd400;
     display:flex;
     justify-content:center;
     align-items:center;
-    z-index:999;
+    z-index:9999;
 }
 
-#splash img{
-    width:200px;
+#logo{
+    width:260px;
+    height:auto;
+    display:block;
+    opacity:1;
 }
 
-/* Worksheet */
+/* Main Worksheet */
 
 .game-sheet{
     width:92%;
@@ -73,17 +75,15 @@ body{
 /* Instruction */
 
 .instruction{
-    font-size:16px;
-    margin:10px 0 20px 10px;
+    font-size:18px;
+    margin:20px 0 30px 10px;
 }
 
 /* Game Area */
 
 #gameArea{
-    display:flex;
-    flex-direction:column;
-    justify-content:space-evenly;
-    height:65vh;
+    height:55vh;
+    position:relative;
 }
 
 /* Row */
@@ -91,29 +91,27 @@ body{
 .row{
     position:relative;
     width:100%;
-    height:110px;
+    height:160px;
 }
 
-/* Left Image */
+/* Images */
 
 .left-img{
     position:absolute;
-    left:5px;
-    top:15px;
-    width:75px;
-    height:75px;
+    left:10px;
+    top:20px;
+    width:90px;
+    height:90px;
     object-fit:contain;
     cursor:pointer;
 }
 
-/* Right Image */
-
 .right-img{
     position:absolute;
-    right:5px;
-    top:15px;
-    width:60px;
-    height:60px;
+    right:10px;
+    top:20px;
+    width:80px;
+    height:80px;
     object-fit:contain;
     cursor:pointer;
 }
@@ -122,10 +120,10 @@ body{
 
 .left-dot{
     position:absolute;
-    left:100px;
-    top:45px;
-    width:14px;
-    height:14px;
+    left:120px;
+    top:58px;
+    width:16px;
+    height:16px;
     background:#999;
     border-radius:50%;
     z-index:2;
@@ -133,10 +131,10 @@ body{
 
 .right-dot{
     position:absolute;
-    right:100px;
-    top:45px;
-    width:14px;
-    height:14px;
+    right:120px;
+    top:58px;
+    width:16px;
+    height:16px;
     background:#999;
     border-radius:50%;
     z-index:2;
@@ -146,30 +144,24 @@ body{
 
 .dash-line{
     position:absolute;
-    left:114px;
-    right:114px;
-    top:51px;
+    left:136px;
+    right:136px;
+    top:66px;
     border-top:3px dashed #444;
-    z-index:1;
 }
 
 /* Green Line */
 
 .green-line{
     position:absolute;
-    left:114px;
+    left:136px;
     width:0%;
-    top:51px;
+    top:66px;
     border-top:5px solid green;
     transition:width 0.4s;
-    z-index:1;
 }
 
-/* Highlights */
-
-.selected{
-    transform:scale(1.05);
-}
+/* Correct */
 
 .correct{
     outline:3px solid green;
@@ -177,13 +169,15 @@ body{
     background:#eaffea;
 }
 
+/* Wrong */
+
 .wrong{
     outline:3px solid red;
     border-radius:10px;
     background:#ffecec;
 }
 
-/* Bottom Buttons */
+/* Buttons */
 
 .bottom-bar{
     position:absolute;
@@ -207,7 +201,7 @@ button{
 #endScreen{
     display:none;
     text-align:center;
-    margin-top:120px;
+    margin-top:140px;
 }
 
 #endScreen h1{
@@ -220,13 +214,19 @@ button{
 
 <body>
 
-<!-- Splash -->
+<!-- Splash Screen -->
 
 <div id="splash">
-<img src="./assets/innovine_logo.png">
+
+<img 
+id="logo"
+src="./assets/innovine_logo.png"
+alt="Innovine Logo"
+>
+
 </div>
 
-<!-- Worksheet -->
+<!-- Main Worksheet -->
 
 <div class="game-sheet">
 
@@ -252,7 +252,7 @@ One to One Correspondence
 
 <!-- Instruction -->
 
-<div class="instruction">
+<div class="instruction" id="instruction">
 Tap on the matching pictures.
 </div>
 
@@ -311,80 +311,87 @@ Play Again
 const questions = [
 
 {
-pairs:[
-{
+instruction:"Tap on the ant and then tap on the apple.",
 left:"./assets/ant.png",
 right:"./assets/apple.jpg"
 },
+
 {
+instruction:"Tap on the arrow and then tap on the balloon.",
 left:"./assets/arrow.png",
 right:"./assets/balloon.png"
 },
+
 {
+instruction:"Tap on the butterfly and then tap on the flower.",
 left:"./assets/butterfly.jpg",
 right:"./assets/flower.png"
-}
-]
 },
 
 {
-pairs:[
-{
+instruction:"Tap on the duckling and then tap on the duck.",
 left:"./assets/duckling.png",
 right:"./assets/duck.png"
 },
+
 {
+instruction:"Tap on the eagle and then tap on the egg.",
 left:"./assets/eagle.png",
 right:"./assets/egg.png"
 },
+
 {
+instruction:"Tap on the monkey and then tap on the banana.",
 left:"./assets/monkey.png",
 right:"./assets/bananas.jpg"
-}
-]
 },
 
 {
-pairs:[
-{
+instruction:"Tap on the elephant and then tap on the tree.",
 left:"./assets/elephant.png",
 right:"./assets/green tree.jpg"
 },
+
 {
+instruction:"Tap on the boy and then tap on the football.",
 left:"./assets/boy.png",
 right:"./assets/football.png"
-}
-]
 }
 
 ];
 
 /* Variables */
 
-let currentPage = 0;
-let selectedIndex = -1;
+let currentQuestion = 0;
 let score = 0;
 let timer = 20;
 let interval;
 let muted = false;
+let selected = false;
 
 const gameArea = document.getElementById("gameArea");
 
-/* Splash */
+/* Splash Screen */
+
+window.addEventListener("load",()=>{
+
+const splash = document.getElementById("splash");
 
 setTimeout(()=>{
 
-document.getElementById("splash").style.display="none";
+splash.style.display = "none";
 
-loadPage();
+loadQuestion();
 
 },10000);
 
-/* Load Page */
+});
 
-function loadPage(){
+/* Load Question */
 
-if(currentPage >= questions.length){
+function loadQuestion(){
+
+if(currentQuestion >= questions.length){
 
 showEnd();
 
@@ -392,81 +399,65 @@ return;
 
 }
 
-selectedIndex = -1;
+selected = false;
 
-gameArea.innerHTML = "";
+const q = questions[currentQuestion];
 
-questions[currentPage].pairs.forEach((pair,index)=>{
+document.getElementById("instruction").innerText = q.instruction;
 
-gameArea.innerHTML += `
+gameArea.innerHTML = `
 
 <div class="row">
 
 <img 
-src="${pair.left}" 
+src="${q.left}" 
 class="left-img" 
-id="left${index}"
+id="leftImg"
 >
 
 <div class="left-dot"></div>
 
 <div class="dash-line"></div>
 
-<div class="green-line" id="line${index}"></div>
+<div class="green-line" id="greenLine"></div>
 
 <div class="right-dot"></div>
 
 <img 
-src="${pair.right}" 
+src="${q.right}" 
 class="right-img" 
-id="right${index}"
+id="rightImg"
 >
 
 </div>
 
 `;
 
-});
+const leftImg = document.getElementById("leftImg");
+const rightImg = document.getElementById("rightImg");
 
-/* Events */
+leftImg.addEventListener("click",()=>{
 
-questions[currentPage].pairs.forEach((pair,index)=>{
+selected = true;
 
-const left = document.getElementById(`left${index}`);
-const right = document.getElementById(`right${index}`);
-
-left.addEventListener("click",()=>{
-
-document.querySelectorAll(".left-img").forEach(img=>{
-
-img.classList.remove("selected");
+leftImg.classList.add("correct");
 
 });
 
-left.classList.add("selected");
+rightImg.addEventListener("click",()=>{
 
-selectedIndex = index;
+if(selected){
 
-});
-
-right.addEventListener("click",()=>{
-
-if(selectedIndex === index){
-
-handleCorrect(index);
+handleCorrect();
 
 }
 else{
 
-handleWrong(right);
+handleWrong();
 
 }
 
 });
-
-});
-
-/* Timer */
 
 timer = 20;
 
@@ -484,9 +475,9 @@ if(timer <= 0){
 
 clearInterval(interval);
 
-currentPage++;
+currentQuestion++;
 
-loadPage();
+loadQuestion();
 
 }
 
@@ -496,14 +487,12 @@ loadPage();
 
 /* Correct */
 
-function handleCorrect(index){
+function handleCorrect(){
 
-document.getElementById(`line${index}`).style.width =
-"calc(100% - 228px)";
+document.getElementById("greenLine").style.width =
+"calc(100% - 272px)";
 
-document.getElementById(`right${index}`).classList.add("correct");
-
-document.getElementById(`left${index}`).classList.add("correct");
+document.getElementById("rightImg").classList.add("correct");
 
 if(!muted){
 
@@ -517,8 +506,8 @@ correct.play();
 
 confetti({
 
-particleCount:60,
-spread:70
+particleCount:70,
+spread:80
 
 });
 
@@ -526,40 +515,23 @@ score++;
 
 document.getElementById("score").innerText = score;
 
-/* Check Completed */
+clearInterval(interval);
 
 setTimeout(()=>{
 
-let completed = true;
+currentQuestion++;
 
-questions[currentPage].pairs.forEach((pair,i)=>{
+loadQuestion();
 
-if(document.getElementById(`line${i}`).style.width !==
-"calc(100% - 228px)"){
-
-completed = false;
-
-}
-
-});
-
-if(completed){
-
-currentPage++;
-
-loadPage();
-
-}
-
-},800);
+},1200);
 
 }
 
 /* Wrong */
 
-function handleWrong(element){
+function handleWrong(){
 
-element.classList.add("wrong");
+document.getElementById("rightImg").classList.add("wrong");
 
 if(!muted){
 
@@ -573,7 +545,7 @@ wrong.play();
 
 setTimeout(()=>{
 
-element.classList.remove("wrong");
+document.getElementById("rightImg").classList.remove("wrong");
 
 },700);
 
@@ -613,4 +585,3 @@ document.getElementById("endScreen").style.display = "block";
 
 </body>
 </html>
-```
