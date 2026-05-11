@@ -1,3 +1,4 @@
+```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -6,540 +7,579 @@
 <title>One to One Correspondence</title>
 
 <style>
-*{
-    margin:0;
-    padding:0;
-    box-sizing:border-box;
-}
 
 body{
-    font-family: Arial, sans-serif;
-    background:#f4c430;
+    margin:0;
+    background:#f2c521;
+    font-family:Arial, sans-serif;
     overflow:hidden;
 }
 
-#logoScreen,
-#gameContainer,
-#endScreen{
-    width:100vw;
-    height:100vh;
+/* Splash Screen */
+
+#splash{
+    position:fixed;
+    inset:0;
+    background:white;
+    border:5px solid yellow;
     display:flex;
     justify-content:center;
     align-items:center;
-    flex-direction:column;
+    z-index:999;
 }
 
-#logoScreen{
-    background:#f4c430;
+#splash img{
+    width:200px;
 }
 
-#logoScreen img{
-    width:220px;
-    max-width:80%;
-}
+/* Worksheet */
 
-#gameContainer{
-    display:none;
-    padding:10px;
-}
-
-.game-box{
-    width:95%;
-    max-width:900px;
-    background:#fff;
-    border-radius:20px;
-    border:3px solid #555;
-    padding:20px;
+.game-sheet{
+    width:92%;
+    height:94vh;
+    background:#f4f4f4;
+    margin:10px auto;
+    border:3px solid #333;
+    border-radius:22px;
     position:relative;
+    padding:15px 15px 90px 15px;
+    box-sizing:border-box;
 }
 
-.header{
-    text-align:center;
-    background:#f4c430;
-    border:2px solid #555;
-    border-radius:15px;
-    padding:10px;
-    font-size:28px;
-    font-weight:bold;
-    margin-bottom:20px;
-}
+/* Top Bar */
 
-.top-bar{
+.topbar{
     display:flex;
     justify-content:space-between;
     align-items:center;
-    margin-bottom:15px;
-    flex-wrap:wrap;
-    gap:10px;
-}
-
-.score,
-.timer{
-    font-size:20px;
+    font-size:18px;
     font-weight:bold;
 }
 
-.controls button{
-    padding:10px 15px;
-    border:none;
-    border-radius:10px;
-    background:#f4c430;
-    cursor:pointer;
+/* Title */
+
+.title-box{
+    width:260px;
+    background:#f2c521;
+    margin:15px auto;
+    text-align:center;
+    padding:10px;
+    border:2px solid #333;
+    border-radius:14px;
+    font-size:18px;
     font-weight:bold;
 }
+
+/* Instruction */
 
 .instruction{
-    font-size:22px;
-    margin-bottom:30px;
-    text-align:center;
+    font-size:16px;
+    margin:10px 0 20px 10px;
 }
 
-.question-area{
-    width:100%;
-    position:relative;
-    min-height:300px;
-}
+/* Game Area */
 
-.match-row{
+#gameArea{
     display:flex;
-    justify-content:space-between;
-    align-items:center;
-    margin:40px 0;
-    position:relative;
+    flex-direction:column;
+    justify-content:space-evenly;
+    height:65vh;
 }
 
-.left-image,
-.right-image{
-    width:120px;
-    height:120px;
+/* Row */
+
+.row{
+    position:relative;
+    width:100%;
+    height:110px;
+}
+
+/* Left Image */
+
+.left-img{
+    position:absolute;
+    left:5px;
+    top:15px;
+    width:75px;
+    height:75px;
     object-fit:contain;
+    cursor:pointer;
+}
+
+/* Right Image */
+
+.right-img{
+    position:absolute;
+    right:5px;
+    top:15px;
+    width:60px;
+    height:60px;
+    object-fit:contain;
+    cursor:pointer;
+}
+
+/* Dots */
+
+.left-dot{
+    position:absolute;
+    left:100px;
+    top:45px;
+    width:14px;
+    height:14px;
+    background:#999;
+    border-radius:50%;
     z-index:2;
 }
 
-.dotted-line{
+.right-dot{
     position:absolute;
-    left:150px;
-    right:150px;
-    top:50%;
-    border-top:4px dashed #555;
-    transform:translateY(-50%);
-}
-
-.dot-left,
-.dot-right{
-    width:18px;
-    height:18px;
+    right:100px;
+    top:45px;
+    width:14px;
+    height:14px;
     background:#999;
     border-radius:50%;
+    z-index:2;
+}
+
+/* Dashed Line */
+
+.dash-line{
     position:absolute;
-    top:50%;
-    transform:translateY(-50%);
+    left:114px;
+    right:114px;
+    top:51px;
+    border-top:3px dashed #444;
+    z-index:1;
 }
 
-.dot-left{
-    left:140px;
+/* Green Line */
+
+.green-line{
+    position:absolute;
+    left:114px;
+    width:0%;
+    top:51px;
+    border-top:5px solid green;
+    transition:width 0.4s;
+    z-index:1;
 }
 
-.dot-right{
-    right:140px;
-}
+/* Highlights */
 
-.drop-zone{
-    border-radius:15px;
+.selected{
+    transform:scale(1.05);
 }
 
 .correct{
-    box-shadow:0 0 20px green;
-    border:4px solid green;
+    outline:3px solid green;
+    border-radius:10px;
+    background:#eaffea;
 }
 
 .wrong{
-    box-shadow:0 0 20px red;
-    border:4px solid red;
+    outline:3px solid red;
+    border-radius:10px;
+    background:#ffecec;
 }
 
-.hint{
-    animation:glow 1s infinite alternate;
-}
+/* Bottom Buttons */
 
-@keyframes glow{
-    from{
-        box-shadow:0 0 10px yellow;
-    }
-    to{
-        box-shadow:0 0 25px orange;
-    }
-}
-
-#feedback{
+.bottom-bar{
     position:absolute;
-    top:10px;
-    left:50%;
-    transform:translateX(-50%);
-    font-size:30px;
-    font-weight:bold;
-    color:green;
+    bottom:18px;
+    left:20px;
+    right:20px;
+    display:flex;
+    justify-content:space-between;
 }
+
+button{
+    padding:8px 18px;
+    font-size:15px;
+    border:none;
+    border-radius:8px;
+    cursor:pointer;
+}
+
+/* End Screen */
 
 #endScreen{
     display:none;
     text-align:center;
-    background:#f4c430;
+    margin-top:120px;
 }
 
 #endScreen h1{
-    font-size:45px;
-    margin-bottom:20px;
+    color:green;
+    font-size:34px;
 }
 
-#endScreen button{
-    padding:15px 25px;
-    font-size:20px;
-    border:none;
-    border-radius:12px;
-    background:#fff;
-    cursor:pointer;
-}
-
-.confetti{
-    position:fixed;
-    width:10px;
-    height:10px;
-    background:red;
-    top:-10px;
-    animation:fall 3s linear forwards;
-}
-
-@keyframes fall{
-    to{
-        transform:translateY(100vh) rotate(720deg);
-    }
-}
-
-@media(max-width:768px){
-
-    .header{
-        font-size:22px;
-    }
-
-    .instruction{
-        font-size:18px;
-    }
-
-    .left-image,
-    .right-image{
-        width:90px;
-        height:90px;
-    }
-
-    .dotted-line{
-        left:110px;
-        right:110px;
-    }
-
-    .dot-left{
-        left:100px;
-    }
-
-    .dot-right{
-        right:100px;
-    }
-}
 </style>
 </head>
 
 <body>
 
-<!-- Logo Screen -->
-<div id="logoScreen">
-    <img src="assets/innovine-logo.png">
+<!-- Splash -->
+
+<div id="splash">
+<img src="./assets/innovine_logo.png">
 </div>
 
-<!-- Game Screen -->
-<div id="gameContainer">
-    <div class="game-box">
+<!-- Worksheet -->
 
-        <div class="header">
-            One to One Correspondence
-        </div>
+<div class="game-sheet">
 
-        <div class="top-bar">
-            <div class="score">Score: <span id="score">0</span>/8</div>
-            <div class="timer">Time: <span id="time">20</span></div>
+<!-- Top -->
 
-            <div class="controls">
-                <button onclick="restartGame()">Restart</button>
-                <button onclick="toggleMute()" id="muteBtn">Mute</button>
-            </div>
-        </div>
+<div class="topbar">
 
-        <div class="instruction" id="instruction"></div>
+<div>
+Score: <span id="score">0</span>/8
+</div>
 
-        <div class="question-area">
+<div>
+Time: <span id="timer">20</span>
+</div>
 
-            <div class="match-row">
+</div>
 
-                <img id="dragItem"
-                    class="left-image"
-                    draggable="true">
+<!-- Title -->
 
-                <div class="dotted-line"></div>
+<div class="title-box">
+One to One Correspondence
+</div>
 
-                <div class="dot-left"></div>
-                <div class="dot-right"></div>
+<!-- Instruction -->
 
-                <img id="dropZone"
-                    class="right-image drop-zone">
+<div class="instruction">
+Tap on the matching pictures.
+</div>
 
-            </div>
+<!-- Game Area -->
 
-        </div>
+<div id="gameArea"></div>
 
-        <div id="feedback"></div>
+<!-- Buttons -->
 
-    </div>
+<div class="bottom-bar">
+
+<button onclick="restartGame()">
+Restart
+</button>
+
+<button onclick="toggleMute()">
+Mute / Unmute
+</button>
+
 </div>
 
 <!-- End Screen -->
+
 <div id="endScreen">
-    <h1>🎉 You have done a great job! 🎉</h1>
-    <button onclick="restartGame()">Play Again</button>
+
+<h1>
+You have done a great job!
+</h1>
+
+<button onclick="restartGame()">
+Play Again
+</button>
+
+</div>
+
 </div>
 
 <!-- Audio -->
-<audio id="correctSound" src="assets/correct.mp3"></audio>
-<audio id="wrongSound" src="assets/wrong.mp3"></audio>
+
+<audio id="correctSound">
+<source src="./assets/correct.mp3" type="audio/mpeg">
+</audio>
+
+<audio id="wrongSound">
+<source src="./assets/wrong.mp3" type="audio/mpeg">
+</audio>
+
+<!-- Confetti -->
+
+<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
 
 <script>
+
+/* Questions */
 
 const questions = [
 
 {
-instruction:"Click on the ant and drag it to the apple.",
-left:"assets/ant.png",
-right:"assets/apple.jpg"
+pairs:[
+{
+left:"./assets/ant.png",
+right:"./assets/apple.jpg"
+},
+{
+left:"./assets/arrow.png",
+right:"./assets/balloon.png"
+},
+{
+left:"./assets/butterfly.jpg",
+right:"./assets/flower.png"
+}
+]
 },
 
 {
-instruction:"Click on the arrow and drag it to the balloon.",
-left:"assets/arrow.png",
-right:"assets/balloon.jpg"
+pairs:[
+{
+left:"./assets/duckling.png",
+right:"./assets/duck.png"
+},
+{
+left:"./assets/eagle.png",
+right:"./assets/egg.png"
+},
+{
+left:"./assets/monkey.png",
+right:"./assets/bananas.jpg"
+}
+]
 },
 
 {
-instruction:"Click on the butterfly and drag it to the flower.",
-left:"assets/butterfly.jpg",
-right:"assets/flower.png"
-},
-
+pairs:[
 {
-instruction:"Click on the duckling and drag it to the duck.",
-left:"assets/duckling.png",
-right:"assets/duck.png"
+left:"./assets/elephant.png",
+right:"./assets/green tree.jpg"
 },
-
 {
-instruction:"Click on the eagle and drag it to the egg.",
-left:"assets/eagle.png",
-right:"assets/egg.png"
-},
-
-{
-instruction:"Click on the monkey and drag it to the banana.",
-left:"assets/monkey.png",
-right:"assets/banana.png"
-},
-
-{
-instruction:"Click on the elephant and drag it to the tree.",
-left:"assets/elephant.png",
-right:"assets/tree.jpg"
-},
-
-{
-instruction:"Click on the boy and drag it to the football.",
-left:"assets/boy.jpg",
-right:"assets/football.png"
+left:"./assets/boy.png",
+right:"./assets/football.png"
+}
+]
 }
 
 ];
 
-let currentQuestion = 0;
+/* Variables */
+
+let currentPage = 0;
+let selectedIndex = -1;
 let score = 0;
-let attempts = 0;
-let timer;
-let timeLeft = 20;
+let timer = 20;
+let interval;
 let muted = false;
 
-const instruction = document.getElementById("instruction");
-const dragItem = document.getElementById("dragItem");
-const dropZone = document.getElementById("dropZone");
-const scoreText = document.getElementById("score");
-const timeText = document.getElementById("time");
+const gameArea = document.getElementById("gameArea");
 
-const correctSound = document.getElementById("correctSound");
-const wrongSound = document.getElementById("wrongSound");
+/* Splash */
 
-setTimeout(() => {
+setTimeout(()=>{
 
-document.getElementById("logoScreen").style.display = "none";
-document.getElementById("gameContainer").style.display = "flex";
+document.getElementById("splash").style.display="none";
 
-loadQuestion();
+loadPage();
 
-},5000);
+},10000);
 
-function loadQuestion(){
+/* Load Page */
 
-clearInterval(timer);
+function loadPage(){
 
-timeLeft = 20;
-timeText.innerText = timeLeft;
+if(currentPage >= questions.length){
 
-timer = setInterval(() => {
+showEnd();
 
-timeLeft--;
-timeText.innerText = timeLeft;
+return;
 
-if(timeLeft <= 0){
-clearInterval(timer);
-showCorrectAnswer();
+}
+
+selectedIndex = -1;
+
+gameArea.innerHTML = "";
+
+questions[currentPage].pairs.forEach((pair,index)=>{
+
+gameArea.innerHTML += `
+
+<div class="row">
+
+<img 
+src="${pair.left}" 
+class="left-img" 
+id="left${index}"
+>
+
+<div class="left-dot"></div>
+
+<div class="dash-line"></div>
+
+<div class="green-line" id="line${index}"></div>
+
+<div class="right-dot"></div>
+
+<img 
+src="${pair.right}" 
+class="right-img" 
+id="right${index}"
+>
+
+</div>
+
+`;
+
+});
+
+/* Events */
+
+questions[currentPage].pairs.forEach((pair,index)=>{
+
+const left = document.getElementById(`left${index}`);
+const right = document.getElementById(`right${index}`);
+
+left.addEventListener("click",()=>{
+
+document.querySelectorAll(".left-img").forEach(img=>{
+
+img.classList.remove("selected");
+
+});
+
+left.classList.add("selected");
+
+selectedIndex = index;
+
+});
+
+right.addEventListener("click",()=>{
+
+if(selectedIndex === index){
+
+handleCorrect(index);
+
+}
+else{
+
+handleWrong(right);
+
+}
+
+});
+
+});
+
+/* Timer */
+
+timer = 20;
+
+document.getElementById("timer").innerText = timer;
+
+clearInterval(interval);
+
+interval = setInterval(()=>{
+
+timer--;
+
+document.getElementById("timer").innerText = timer;
+
+if(timer <= 0){
+
+clearInterval(interval);
+
+currentPage++;
+
+loadPage();
+
 }
 
 },1000);
 
-attempts = 0;
+}
 
-let q = questions[currentQuestion];
+/* Correct */
 
-instruction.innerText = q.instruction;
+function handleCorrect(index){
 
-dragItem.src = q.left;
-dropZone.src = q.right;
+document.getElementById(`line${index}`).style.width =
+"calc(100% - 228px)";
 
-dragItem.style.position = "relative";
-dragItem.style.left = "0px";
-dragItem.style.top = "0px";
+document.getElementById(`right${index}`).classList.add("correct");
 
-dropZone.classList.remove("correct","wrong","hint");
+document.getElementById(`left${index}`).classList.add("correct");
+
+if(!muted){
+
+const correct = document.getElementById("correctSound");
+
+correct.currentTime = 0;
+
+correct.play();
 
 }
 
-dragItem.addEventListener("dragstart",(e)=>{
-e.dataTransfer.setData("text","");
-});
+confetti({
 
-dropZone.addEventListener("dragover",(e)=>{
-e.preventDefault();
-});
-
-dropZone.addEventListener("drop",(e)=>{
-
-e.preventDefault();
-
-if(attempts === 0){
-
-correctAnswer();
-
-}else{
-
-showCorrectAnswer();
-
-}
+particleCount:60,
+spread:70
 
 });
-
-function correctAnswer(){
-
-clearInterval(timer);
 
 score++;
-scoreText.innerText = score;
 
-dropZone.classList.add("correct");
+document.getElementById("score").innerText = score;
 
-if(!muted){
-correctSound.play();
-}
-
-showConfetti();
-
-document.getElementById("feedback").innerText = "Great Job!";
+/* Check Completed */
 
 setTimeout(()=>{
 
-document.getElementById("feedback").innerText = "";
+let completed = true;
 
-currentQuestion++;
+questions[currentPage].pairs.forEach((pair,i)=>{
 
-if(currentQuestion < questions.length){
+if(document.getElementById(`line${i}`).style.width !==
+"calc(100% - 228px)"){
 
-loadQuestion();
-
-}else{
-
-endGame();
+completed = false;
 
 }
 
-},2000);
+});
+
+if(completed){
+
+currentPage++;
+
+loadPage();
 
 }
 
-function wrongAnswer(){
+},800);
 
-attempts++;
+}
 
-dropZone.classList.add("wrong");
+/* Wrong */
+
+function handleWrong(element){
+
+element.classList.add("wrong");
 
 if(!muted){
-wrongSound.play();
-}
 
-if(attempts === 1){
+const wrong = document.getElementById("wrongSound");
 
-dropZone.classList.add("hint");
+wrong.currentTime = 0;
 
-}else{
-
-showCorrectAnswer();
+wrong.play();
 
 }
-
-}
-
-function showCorrectAnswer(){
-
-clearInterval(timer);
-
-dropZone.classList.add("correct");
 
 setTimeout(()=>{
 
-currentQuestion++;
+element.classList.remove("wrong");
 
-if(currentQuestion < questions.length){
-
-loadQuestion();
-
-}else{
-
-endGame();
+},700);
 
 }
 
-},2000);
-
-}
-
-function endGame(){
-
-document.getElementById("gameContainer").style.display = "none";
-document.getElementById("endScreen").style.display = "flex";
-
-showConfetti();
-
-}
+/* Restart */
 
 function restartGame(){
 
@@ -547,37 +587,25 @@ location.reload();
 
 }
 
+/* Mute */
+
 function toggleMute(){
 
 muted = !muted;
 
-document.getElementById("muteBtn").innerText = muted ? "Unmute" : "Mute";
-
 }
 
-function showConfetti(){
+/* End */
 
-for(let i=0;i<50;i++){
+function showEnd(){
 
-let confetti = document.createElement("div");
+gameArea.style.display = "none";
 
-confetti.classList.add("confetti");
+document.querySelector(".instruction").style.display = "none";
 
-confetti.style.left = Math.random()*100 + "vw";
+document.querySelector(".bottom-bar").style.display = "none";
 
-confetti.style.background =
-`hsl(${Math.random()*360},100%,50%)`;
-
-confetti.style.animationDuration =
-(Math.random()*3+2)+"s";
-
-document.body.appendChild(confetti);
-
-setTimeout(()=>{
-confetti.remove();
-},5000);
-
-}
+document.getElementById("endScreen").style.display = "block";
 
 }
 
@@ -585,3 +613,4 @@ confetti.remove();
 
 </body>
 </html>
+```
