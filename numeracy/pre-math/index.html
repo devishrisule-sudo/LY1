@@ -19,33 +19,33 @@ body{
 #splash{
     position:fixed;
     inset:0;
-    background:#ffffff;
-    border:5px solid #ffd400;
+    background:#fff;
+    border:5px solid yellow;
     display:flex;
     justify-content:center;
     align-items:center;
     z-index:9999;
 }
 
-#logo{
-    width:260px;
-    height:auto;
-    display:block;
-    opacity:1;
+#splash img{
+    width:220px;
+    max-width:80%;
+    object-fit:contain;
 }
 
-/* Main Worksheet */
+/* Main Sheet */
 
 .game-sheet{
-    width:92%;
-    height:94vh;
+    width:95%;
+    height:95vh;
     background:#f4f4f4;
-    margin:10px auto;
+    margin:8px auto;
     border:3px solid #333;
-    border-radius:22px;
-    position:relative;
-    padding:15px 15px 90px 15px;
+    border-radius:20px;
+    padding:10px;
     box-sizing:border-box;
+    position:relative;
+    overflow:hidden;
 }
 
 /* Top Bar */
@@ -54,7 +54,7 @@ body{
     display:flex;
     justify-content:space-between;
     align-items:center;
-    font-size:18px;
+    font-size:16px;
     font-weight:bold;
 }
 
@@ -62,10 +62,11 @@ body{
 
 .title-box{
     width:260px;
+    max-width:90%;
     background:#f2c521;
-    margin:15px auto;
+    margin:10px auto;
     text-align:center;
-    padding:10px;
+    padding:8px;
     border:2px solid #333;
     border-radius:14px;
     font-size:18px;
@@ -75,15 +76,18 @@ body{
 /* Instruction */
 
 .instruction{
-    font-size:18px;
-    margin:20px 0 30px 10px;
+    font-size:16px;
+    margin:10px;
+    text-align:center;
 }
 
 /* Game Area */
 
 #gameArea{
-    height:55vh;
-    position:relative;
+    height:68vh;
+    display:flex;
+    flex-direction:column;
+    justify-content:space-evenly;
 }
 
 /* Row */
@@ -91,27 +95,29 @@ body{
 .row{
     position:relative;
     width:100%;
-    height:160px;
+    height:120px;
 }
 
-/* Images */
+/* Left Image */
 
 .left-img{
     position:absolute;
-    left:10px;
-    top:20px;
-    width:90px;
-    height:90px;
+    left:5px;
+    top:15px;
+    width:70px;
+    height:70px;
     object-fit:contain;
     cursor:pointer;
 }
 
+/* Right Image */
+
 .right-img{
     position:absolute;
-    right:10px;
-    top:20px;
-    width:80px;
-    height:80px;
+    right:5px;
+    top:15px;
+    width:65px;
+    height:65px;
     object-fit:contain;
     cursor:pointer;
 }
@@ -120,22 +126,22 @@ body{
 
 .left-dot{
     position:absolute;
-    left:120px;
-    top:58px;
-    width:16px;
-    height:16px;
-    background:#999;
+    left:85px;
+    top:45px;
+    width:14px;
+    height:14px;
+    background:#888;
     border-radius:50%;
     z-index:2;
 }
 
 .right-dot{
     position:absolute;
-    right:120px;
-    top:58px;
-    width:16px;
-    height:16px;
-    background:#999;
+    right:85px;
+    top:45px;
+    width:14px;
+    height:14px;
+    background:#888;
     border-radius:50%;
     z-index:2;
 }
@@ -144,9 +150,9 @@ body{
 
 .dash-line{
     position:absolute;
-    left:136px;
-    right:136px;
-    top:66px;
+    left:99px;
+    right:99px;
+    top:51px;
     border-top:3px dashed #444;
 }
 
@@ -154,9 +160,9 @@ body{
 
 .green-line{
     position:absolute;
-    left:136px;
+    left:99px;
     width:0%;
-    top:66px;
+    top:51px;
     border-top:5px solid green;
     transition:width 0.4s;
 }
@@ -181,16 +187,16 @@ body{
 
 .bottom-bar{
     position:absolute;
-    bottom:18px;
-    left:20px;
-    right:20px;
+    bottom:10px;
+    left:10px;
+    right:10px;
     display:flex;
     justify-content:space-between;
 }
 
 button{
-    padding:8px 18px;
-    font-size:15px;
+    padding:8px 16px;
+    font-size:14px;
     border:none;
     border-radius:8px;
     cursor:pointer;
@@ -201,12 +207,64 @@ button{
 #endScreen{
     display:none;
     text-align:center;
-    margin-top:140px;
+    margin-top:100px;
 }
 
 #endScreen h1{
     color:green;
-    font-size:34px;
+    font-size:30px;
+}
+
+/* Mobile Responsive */
+
+@media(max-width:600px){
+
+.left-img{
+    width:55px;
+    height:55px;
+    top:20px;
+}
+
+.right-img{
+    width:50px;
+    height:50px;
+    top:20px;
+}
+
+.left-dot{
+    left:70px;
+}
+
+.right-dot{
+    right:70px;
+}
+
+.dash-line{
+    left:84px;
+    right:84px;
+}
+
+.green-line{
+    left:84px;
+}
+
+.row{
+    height:100px;
+}
+
+.title-box{
+    font-size:16px;
+}
+
+.instruction{
+    font-size:14px;
+}
+
+button{
+    font-size:12px;
+    padding:7px 12px;
+}
+
 }
 
 </style>
@@ -218,24 +276,18 @@ button{
 
 <div id="splash">
 
-<img 
-id="logo"
-src="./assets/innovine_logo.png"
-alt="Innovine Logo"
->
+<img src="./assets/innovinelogo.png">
 
 </div>
 
-<!-- Main Worksheet -->
+<!-- Main Sheet -->
 
 <div class="game-sheet">
-
-<!-- Top -->
 
 <div class="topbar">
 
 <div>
-Score: <span id="score">0</span>/8
+Score: <span id="score">0</span>/24
 </div>
 
 <div>
@@ -244,23 +296,15 @@ Time: <span id="timer">20</span>
 
 </div>
 
-<!-- Title -->
-
 <div class="title-box">
 One to One Correspondence
 </div>
-
-<!-- Instruction -->
 
 <div class="instruction" id="instruction">
 Tap on the matching pictures.
 </div>
 
-<!-- Game Area -->
-
 <div id="gameArea"></div>
-
-<!-- Buttons -->
 
 <div class="bottom-bar">
 
@@ -273,8 +317,6 @@ Mute / Unmute
 </button>
 
 </div>
-
-<!-- End Screen -->
 
 <div id="endScreen">
 
@@ -300,13 +342,15 @@ Play Again
 <source src="./assets/wrong.mp3" type="audio/mpeg">
 </audio>
 
+<audio id="clapSound">
+<source src="./assets/claps.mp3" type="audio/mpeg">
+</audio>
+
 <!-- Confetti -->
 
 <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
 
 <script>
-
-/* Questions */
 
 const questions = [
 
@@ -360,26 +404,23 @@ right:"./assets/football.png"
 
 ];
 
-/* Variables */
-
 let currentQuestion = 0;
 let score = 0;
 let timer = 20;
 let interval;
 let muted = false;
-let selected = false;
+let selectedRow = -1;
+let completedRows = [];
 
 const gameArea = document.getElementById("gameArea");
 
-/* Splash Screen */
+/* Splash */
 
 window.addEventListener("load",()=>{
 
-const splash = document.getElementById("splash");
-
 setTimeout(()=>{
 
-splash.style.display = "none";
+document.getElementById("splash").style.display="none";
 
 loadQuestion();
 
@@ -399,65 +440,83 @@ return;
 
 }
 
-selected = false;
+selectedRow = -1;
+completedRows = [];
 
 const q = questions[currentQuestion];
 
-document.getElementById("instruction").innerText = q.instruction;
+document.getElementById("instruction").innerText =
+q.instruction;
 
-gameArea.innerHTML = `
+gameArea.innerHTML = "";
+
+for(let i=0;i<3;i++){
+
+gameArea.innerHTML += `
 
 <div class="row">
 
 <img 
 src="${q.left}" 
-class="left-img" 
-id="leftImg"
+class="left-img"
+id="left${i}"
 >
 
 <div class="left-dot"></div>
 
 <div class="dash-line"></div>
 
-<div class="green-line" id="greenLine"></div>
+<div class="green-line" id="line${i}"></div>
 
 <div class="right-dot"></div>
 
 <img 
 src="${q.right}" 
-class="right-img" 
-id="rightImg"
+class="right-img"
+id="right${i}"
 >
 
 </div>
 
 `;
 
-const leftImg = document.getElementById("leftImg");
-const rightImg = document.getElementById("rightImg");
+}
 
-leftImg.addEventListener("click",()=>{
+for(let i=0;i<3;i++){
 
-selected = true;
+const left = document.getElementById(`left${i}`);
+const right = document.getElementById(`right${i}`);
 
-leftImg.classList.add("correct");
+left.addEventListener("click",()=>{
+
+selectedRow = i;
+
+document.querySelectorAll(".left-img").forEach(img=>{
+
+img.classList.remove("correct");
 
 });
 
-rightImg.addEventListener("click",()=>{
+left.classList.add("correct");
 
-if(selected){
+});
 
-handleCorrect();
+right.addEventListener("click",()=>{
+
+if(selectedRow === i){
+
+handleCorrect(i);
 
 }
 else{
 
-handleWrong();
+handleWrong(right);
 
 }
 
 });
+
+}
 
 timer = 20;
 
@@ -487,12 +546,16 @@ loadQuestion();
 
 /* Correct */
 
-function handleCorrect(){
+function handleCorrect(i){
 
-document.getElementById("greenLine").style.width =
-"calc(100% - 272px)";
+if(completedRows.includes(i)) return;
 
-document.getElementById("rightImg").classList.add("correct");
+completedRows.push(i);
+
+document.getElementById(`line${i}`).style.width =
+"calc(100% - 170px)";
+
+document.getElementById(`right${i}`).classList.add("correct");
 
 if(!muted){
 
@@ -505,15 +568,15 @@ correct.play();
 }
 
 confetti({
-
-particleCount:70,
-spread:80
-
+particleCount:50,
+spread:70
 });
 
 score++;
 
 document.getElementById("score").innerText = score;
+
+if(completedRows.length === 3){
 
 clearInterval(interval);
 
@@ -527,11 +590,13 @@ loadQuestion();
 
 }
 
+}
+
 /* Wrong */
 
-function handleWrong(){
+function handleWrong(element){
 
-document.getElementById("rightImg").classList.add("wrong");
+element.classList.add("wrong");
 
 if(!muted){
 
@@ -545,7 +610,7 @@ wrong.play();
 
 setTimeout(()=>{
 
-document.getElementById("rightImg").classList.remove("wrong");
+element.classList.remove("wrong");
 
 },700);
 
@@ -573,11 +638,20 @@ function showEnd(){
 
 gameArea.style.display = "none";
 
-document.querySelector(".instruction").style.display = "none";
+document.querySelector(".instruction").style.display =
+"none";
 
-document.querySelector(".bottom-bar").style.display = "none";
+document.querySelector(".bottom-bar").style.display =
+"none";
 
-document.getElementById("endScreen").style.display = "block";
+document.getElementById("endScreen").style.display =
+"block";
+
+if(!muted){
+
+document.getElementById("clapSound").play();
+
+}
 
 }
 
