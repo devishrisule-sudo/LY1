@@ -59,7 +59,7 @@ body{
 
 .topbar{
     display:flex;
-    justify-content:space-between;
+    justify-content:flex-start;
     align-items:center;
     font-size:clamp(14px,2vw,20px);
     font-weight:bold;
@@ -183,13 +183,15 @@ body{
     z-index:2;
 }
 
-/* Highlights */
+/* Correct */
 
 .correct{
     outline:3px solid green;
     border-radius:10px;
     background:#eaffea;
 }
+
+/* Wrong */
 
 .wrong{
     outline:3px solid red;
@@ -234,7 +236,7 @@ button{
     margin-bottom:20px;
 }
 
-/* Small Mobiles */
+/* Mobile */
 
 @media(max-width:480px){
 
@@ -270,7 +272,7 @@ button{
 
 }
 
-/* Tablets */
+/* Tablet */
 
 @media(min-width:768px){
 
@@ -318,10 +320,6 @@ button{
 
 <div>
 Score: <span id="score">0</span>/24
-</div>
-
-<div>
-Time: <span id="timer">20</span>
 </div>
 
 </div>
@@ -436,8 +434,6 @@ right:"./assets/football.png"
 
 let currentQuestion = 0;
 let score = 0;
-let timer = 20;
-let interval;
 let muted = false;
 let selectedRow = -1;
 let completedRows = [];
@@ -548,30 +544,6 @@ handleWrong(right);
 
 }
 
-timer = 20;
-
-document.getElementById("timer").innerText = timer;
-
-clearInterval(interval);
-
-interval = setInterval(()=>{
-
-timer--;
-
-document.getElementById("timer").innerText = timer;
-
-if(timer <= 0){
-
-clearInterval(interval);
-
-currentQuestion++;
-
-loadQuestion();
-
-}
-
-},1000);
-
 }
 
 /* Correct */
@@ -582,13 +554,47 @@ if(completedRows.includes(i)) return;
 
 completedRows.push(i);
 
-document.getElementById(`line${i}`).style.width = "64%";
+const line =
+document.getElementById(`line${i}`);
 
-document.getElementById(`right${i}`).classList.add("correct");
+const leftDot =
+document.querySelectorAll(".left-dot")[i];
+
+const rightDot =
+document.querySelectorAll(".right-dot")[i];
+
+const row =
+document.querySelectorAll(".row")[i];
+
+const rowRect =
+row.getBoundingClientRect();
+
+const leftRect =
+leftDot.getBoundingClientRect();
+
+const rightRect =
+rightDot.getBoundingClientRect();
+
+const startX =
+(leftRect.left + leftRect.width/2)
+- rowRect.left;
+
+const endX =
+(rightRect.left + rightRect.width/2)
+- rowRect.left;
+
+line.style.left = startX + "px";
+
+line.style.width =
+(endX - startX) + "px";
+
+document.getElementById(`right${i}`)
+.classList.add("correct");
 
 if(!muted){
 
-const correct = document.getElementById("correctSound");
+const correct =
+document.getElementById("correctSound");
 
 correct.currentTime = 0;
 
@@ -605,9 +611,15 @@ score++;
 
 document.getElementById("score").innerText = score;
 
+/* Next Question Only After All 3 */
+
 if(completedRows.length === 3){
 
-clearInterval(interval);
+if(!muted){
+
+document.getElementById("clapSound").play();
+
+}
 
 setTimeout(()=>{
 
@@ -615,7 +627,7 @@ currentQuestion++;
 
 loadQuestion();
 
-},1200);
+},1500);
 
 }
 
@@ -629,7 +641,8 @@ element.classList.add("wrong");
 
 if(!muted){
 
-const wrong = document.getElementById("wrongSound");
+const wrong =
+document.getElementById("wrongSound");
 
 wrong.currentTime = 0;
 
@@ -667,18 +680,19 @@ function showEnd(){
 
 gameArea.style.display = "none";
 
-document.querySelector(".instruction").style.display =
-"none";
+document.querySelector(".instruction")
+.style.display = "none";
 
-document.querySelector(".bottom-bar").style.display =
-"none";
+document.querySelector(".bottom-bar")
+.style.display = "none";
 
-document.getElementById("endScreen").style.display =
-"block";
+document.getElementById("endScreen")
+.style.display = "block";
 
 if(!muted){
 
-document.getElementById("clapSound").play();
+document.getElementById("clapSound")
+.play();
 
 }
 
