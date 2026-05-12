@@ -2,16 +2,22 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>One to One Correspondence</title>
 
 <style>
 
-body{
+*{
     margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+body{
     background:#f2c521;
     font-family:Arial, sans-serif;
     overflow:hidden;
+    touch-action:manipulation;
 }
 
 /* Splash Screen */
@@ -19,8 +25,8 @@ body{
 #splash{
     position:fixed;
     inset:0;
-    background:#fff;
-    border:5px solid yellow;
+    background:#ffffff;
+    border:4px solid #ffd400;
     display:flex;
     justify-content:center;
     align-items:center;
@@ -29,23 +35,22 @@ body{
 
 #splash img{
     width:220px;
-    max-width:80%;
+    max-width:75%;
     object-fit:contain;
 }
 
 /* Main Sheet */
 
 .game-sheet{
-    width:95%;
-    height:95vh;
+    width:96%;
+    height:96vh;
     background:#f4f4f4;
-    margin:8px auto;
+    margin:2vh auto;
     border:3px solid #333;
     border-radius:20px;
-    padding:10px;
-    box-sizing:border-box;
     position:relative;
     overflow:hidden;
+    padding:10px;
 }
 
 /* Top Bar */
@@ -54,31 +59,31 @@ body{
     display:flex;
     justify-content:space-between;
     align-items:center;
-    font-size:16px;
+    font-size:clamp(14px,2vw,20px);
     font-weight:bold;
+    margin-bottom:5px;
 }
 
 /* Title */
 
 .title-box{
-    width:260px;
-    max-width:90%;
+    width:min(280px,90%);
     background:#f2c521;
-    margin:10px auto;
+    margin:8px auto;
     text-align:center;
-    padding:8px;
+    padding:10px;
     border:2px solid #333;
     border-radius:14px;
-    font-size:18px;
+    font-size:clamp(15px,2vw,22px);
     font-weight:bold;
 }
 
 /* Instruction */
 
 .instruction{
-    font-size:16px;
-    margin:10px;
     text-align:center;
+    font-size:clamp(14px,2vw,20px);
+    margin:10px 5px;
 }
 
 /* Game Area */
@@ -90,34 +95,35 @@ body{
     justify-content:space-evenly;
 }
 
-/* Row */
+/* Rows */
 
 .row{
     position:relative;
     width:100%;
-    height:120px;
+    height:18vh;
+    min-height:90px;
 }
 
-/* Left Image */
+/* Images */
 
 .left-img{
     position:absolute;
-    left:5px;
-    top:15px;
-    width:70px;
-    height:70px;
+    left:2%;
+    top:50%;
+    transform:translateY(-50%);
+    width:clamp(50px,8vw,90px);
+    height:clamp(50px,8vw,90px);
     object-fit:contain;
     cursor:pointer;
 }
 
-/* Right Image */
-
 .right-img{
     position:absolute;
-    right:5px;
-    top:15px;
-    width:65px;
-    height:65px;
+    right:2%;
+    top:50%;
+    transform:translateY(-50%);
+    width:clamp(45px,7vw,80px);
+    height:clamp(45px,7vw,80px);
     object-fit:contain;
     cursor:pointer;
 }
@@ -126,8 +132,9 @@ body{
 
 .left-dot{
     position:absolute;
-    left:85px;
-    top:45px;
+    left:18%;
+    top:50%;
+    transform:translateY(-50%);
     width:14px;
     height:14px;
     background:#888;
@@ -137,8 +144,9 @@ body{
 
 .right-dot{
     position:absolute;
-    right:85px;
-    top:45px;
+    right:18%;
+    top:50%;
+    transform:translateY(-50%);
     width:14px;
     height:14px;
     background:#888;
@@ -150,9 +158,10 @@ body{
 
 .dash-line{
     position:absolute;
-    left:99px;
-    right:99px;
-    top:51px;
+    left:calc(18% + 14px);
+    right:calc(18% + 14px);
+    top:50%;
+    transform:translateY(-50%);
     border-top:3px dashed #444;
 }
 
@@ -160,22 +169,21 @@ body{
 
 .green-line{
     position:absolute;
-    left:99px;
+    left:calc(18% + 14px);
     width:0%;
-    top:51px;
+    top:50%;
+    transform:translateY(-50%);
     border-top:5px solid green;
-    transition:width 0.4s;
+    transition:width 0.4s ease;
 }
 
-/* Correct */
+/* Highlights */
 
 .correct{
     outline:3px solid green;
     border-radius:10px;
     background:#eaffea;
 }
-
-/* Wrong */
 
 .wrong{
     outline:3px solid red;
@@ -192,13 +200,17 @@ body{
     right:10px;
     display:flex;
     justify-content:space-between;
+    gap:10px;
 }
 
 button{
-    padding:8px 16px;
-    font-size:14px;
+    flex:1;
+    max-width:180px;
+    padding:10px;
+    font-size:clamp(12px,2vw,16px);
     border:none;
-    border-radius:8px;
+    border-radius:10px;
+    background:#f2f2f2;
     cursor:pointer;
 }
 
@@ -207,62 +219,74 @@ button{
 #endScreen{
     display:none;
     text-align:center;
-    margin-top:100px;
+    margin-top:25vh;
 }
 
 #endScreen h1{
     color:green;
-    font-size:30px;
+    font-size:clamp(24px,5vw,40px);
+    margin-bottom:20px;
 }
 
-/* Mobile Responsive */
+/* Small Old Mobiles */
 
-@media(max-width:600px){
+@media(max-width:480px){
 
-.left-img{
-    width:55px;
-    height:55px;
-    top:20px;
-}
-
-.right-img{
-    width:50px;
-    height:50px;
-    top:20px;
-}
-
-.left-dot{
-    left:70px;
-}
-
-.right-dot{
-    right:70px;
-}
-
-.dash-line{
-    left:84px;
-    right:84px;
-}
-
-.green-line{
-    left:84px;
+.game-sheet{
+    height:97vh;
+    padding:8px;
 }
 
 .row{
-    height:100px;
+    height:16vh;
 }
 
-.title-box{
-    font-size:16px;
+.left-dot{
+    left:22%;
 }
 
-.instruction{
-    font-size:14px;
+.right-dot{
+    right:22%;
+}
+
+.dash-line{
+    left:calc(22% + 14px);
+    right:calc(22% + 14px);
+}
+
+.green-line{
+    left:calc(22% + 14px);
 }
 
 button{
-    font-size:12px;
-    padding:7px 12px;
+    padding:8px;
+}
+
+}
+
+/* Tablets */
+
+@media(min-width:768px){
+
+.row{
+    height:16vh;
+}
+
+.left-dot{
+    left:14%;
+}
+
+.right-dot{
+    right:14%;
+}
+
+.dash-line{
+    left:calc(14% + 14px);
+    right:calc(14% + 14px);
+}
+
+.green-line{
+    left:calc(14% + 14px);
 }
 
 }
@@ -272,7 +296,7 @@ button{
 
 <body>
 
-<!-- Splash Screen -->
+<!-- Splash -->
 
 <div id="splash">
 
@@ -553,7 +577,7 @@ if(completedRows.includes(i)) return;
 completedRows.push(i);
 
 document.getElementById(`line${i}`).style.width =
-"calc(100% - 170px)";
+"calc(100% - 198px)";
 
 document.getElementById(`right${i}`).classList.add("correct");
 
