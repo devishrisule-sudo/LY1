@@ -132,54 +132,55 @@ body{
     cursor:pointer;
 }
 
-/* Dots */
+/* Grey Dots */
 
 .left-dot{
     position:absolute;
     left:18%;
     top:50%;
-    transform:translateY(-50%);
+    transform:translate(-50%,-50%);
     width:14px;
     height:14px;
     background:#888;
     border-radius:50%;
-    z-index:2;
+    z-index:3;
 }
 
 .right-dot{
     position:absolute;
     right:18%;
     top:50%;
-    transform:translateY(-50%);
+    transform:translate(50%,-50%);
     width:14px;
     height:14px;
     background:#888;
     border-radius:50%;
-    z-index:2;
+    z-index:3;
 }
 
 /* Dashed Line */
 
 .dash-line{
     position:absolute;
-    left:calc(18% + 14px);
-    right:calc(18% + 14px);
+    left:18%;
+    right:18%;
     top:50%;
     transform:translateY(-50%);
     border-top:3px dashed #444;
+    z-index:1;
 }
 
 /* Green Line */
 
 .green-line{
     position:absolute;
-    left:calc(18% + 14px);
+    left:18%;
     width:0;
-    max-width:calc(64% - 28px);
     top:50%;
     transform:translateY(-50%);
     border-top:5px solid green;
     transition:width 0.4s ease;
+    z-index:2;
 }
 
 /* Highlights */
@@ -255,12 +256,12 @@ button{
 }
 
 .dash-line{
-    left:calc(22% + 14px);
-    right:calc(22% + 14px);
+    left:22%;
+    right:22%;
 }
 
 .green-line{
-    left:calc(22% + 14px);
+    left:22%;
 }
 
 button{
@@ -286,12 +287,12 @@ button{
 }
 
 .dash-line{
-    left:calc(14% + 14px);
-    right:calc(14% + 14px);
+    left:14%;
+    right:14%;
 }
 
 .green-line{
-    left:calc(14% + 14px);
+    left:14%;
 }
 
 }
@@ -581,8 +582,7 @@ if(completedRows.includes(i)) return;
 
 completedRows.push(i);
 
-document.getElementById(`line${i}`).style.width =
-"calc(64% - 28px)";
+document.getElementById(`line${i}`).style.width = "64%";
 
 document.getElementById(`right${i}`).classList.add("correct");
 
