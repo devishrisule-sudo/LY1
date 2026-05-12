@@ -2,7 +2,9 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="viewport"
+content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
 <title>One to One Correspondence</title>
 
 <style>
@@ -95,7 +97,7 @@ body{
     justify-content:space-evenly;
 }
 
-/* Rows */
+/* Row */
 
 .row{
     position:relative;
@@ -104,7 +106,7 @@ body{
     min-height:90px;
 }
 
-/* Images */
+/* Left Image */
 
 .left-img{
     position:absolute;
@@ -116,6 +118,8 @@ body{
     object-fit:contain;
     cursor:pointer;
 }
+
+/* Right Image */
 
 .right-img{
     position:absolute;
@@ -170,7 +174,8 @@ body{
 .green-line{
     position:absolute;
     left:calc(18% + 14px);
-    width:0%;
+    width:0;
+    max-width:calc(64% - 28px);
     top:50%;
     transform:translateY(-50%);
     border-top:5px solid green;
@@ -228,7 +233,7 @@ button{
     margin-bottom:20px;
 }
 
-/* Small Old Mobiles */
+/* Small Mobiles */
 
 @media(max-width:480px){
 
@@ -296,7 +301,7 @@ button{
 
 <body>
 
-<!-- Splash -->
+<!-- Splash Screen -->
 
 <div id="splash">
 
@@ -577,7 +582,7 @@ if(completedRows.includes(i)) return;
 completedRows.push(i);
 
 document.getElementById(`line${i}`).style.width =
-"calc(100% - 198px)";
+"calc(64% - 28px)";
 
 document.getElementById(`right${i}`).classList.add("correct");
 
