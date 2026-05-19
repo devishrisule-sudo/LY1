@@ -19,7 +19,7 @@ body{
     background:#f2c521;
     font-family:Arial, sans-serif;
     overflow:hidden;
-    touch-action:manipulation;
+    touch-action:none;
 }
 
 /* Splash Screen */
@@ -116,7 +116,7 @@ body{
     width:clamp(50px,8vw,90px);
     height:clamp(50px,8vw,90px);
     object-fit:contain;
-    cursor:pointer;
+    user-select:none;
 }
 
 /* Right Image */
@@ -129,7 +129,7 @@ body{
     width:clamp(45px,7vw,80px);
     height:clamp(45px,7vw,80px);
     object-fit:contain;
-    cursor:pointer;
+    user-select:none;
 }
 
 /* Grey Dots */
@@ -170,7 +170,7 @@ body{
     z-index:1;
 }
 
-/* Green Line */
+/* Green Tracing Line */
 
 .green-line{
     position:absolute;
@@ -178,8 +178,7 @@ body{
     width:0;
     top:50%;
     transform:translateY(-50%);
-    border-top:5px solid green;
-    transition:width 0.4s ease;
+    border-top:5px solid transparent;
     z-index:2;
 }
 
@@ -304,7 +303,7 @@ button{
 
 <body>
 
-<!-- Splash Screen -->
+<!-- Splash -->
 
 <div id="splash">
 
@@ -329,7 +328,7 @@ One to One Correspondence
 </div>
 
 <div class="instruction" id="instruction">
-Tap on the matching pictures.
+Trace on the dotted line to match the pictures.
 </div>
 
 <div id="gameArea"></div>
@@ -383,49 +382,49 @@ Play Again
 const questions = [
 
 {
-instruction:"Tap on the ant and then tap on the apple.",
+instruction:"Trace on the dotted line from the ant to the apple.",
 left:"./assets/ant.png",
 right:"./assets/apple.jpg"
 },
 
 {
-instruction:"Tap on the arrow and then tap on the balloon.",
+instruction:"Trace on the dotted line from the arrow to the balloon.",
 left:"./assets/arrow.png",
 right:"./assets/balloon.png"
 },
 
 {
-instruction:"Tap on the butterfly and then tap on the flower.",
+instruction:"Trace on the dotted line from the butterfly to the flower.",
 left:"./assets/butterfly.jpg",
 right:"./assets/flower.png"
 },
 
 {
-instruction:"Tap on the duckling and then tap on the duck.",
+instruction:"Trace on the dotted line from the duckling to the duck.",
 left:"./assets/duckling.png",
 right:"./assets/duck.png"
 },
 
 {
-instruction:"Tap on the eagle and then tap on the egg.",
+instruction:"Trace on the dotted line from the eagle to the egg.",
 left:"./assets/eagle.png",
 right:"./assets/egg.png"
 },
 
 {
-instruction:"Tap on the monkey and then tap on the banana.",
+instruction:"Trace on the dotted line from the monkey to the banana.",
 left:"./assets/monkey.png",
 right:"./assets/bananas.jpg"
 },
 
 {
-instruction:"Tap on the elephant and then tap on the tree.",
+instruction:"Trace on the dotted line from the elephant to the tree.",
 left:"./assets/elephant.png",
 right:"./assets/green tree.jpg"
 },
 
 {
-instruction:"Tap on the boy and then tap on the football.",
+instruction:"Trace on the dotted line from the boy to the football.",
 left:"./assets/boy.png",
 right:"./assets/football.png"
 }
@@ -435,10 +434,10 @@ right:"./assets/football.png"
 let currentQuestion = 0;
 let score = 0;
 let muted = false;
-let selectedRow = -1;
 let completedRows = [];
 
-const gameArea = document.getElementById("gameArea");
+const gameArea =
+document.getElementById("gameArea");
 
 /* Splash */
 
@@ -446,7 +445,8 @@ window.addEventListener("load",()=>{
 
 setTimeout(()=>{
 
-document.getElementById("splash").style.display="none";
+document.getElementById("splash")
+.style.display="none";
 
 loadQuestion();
 
@@ -466,13 +466,12 @@ return;
 
 }
 
-selectedRow = -1;
 completedRows = [];
 
 const q = questions[currentQuestion];
 
-document.getElementById("instruction").innerText =
-q.instruction;
+document.getElementById("instruction")
+.innerText = q.instruction;
 
 gameArea.innerHTML = "";
 
@@ -492,7 +491,8 @@ id="left${i}"
 
 <div class="dash-line"></div>
 
-<div class="green-line" id="line${i}"></div>
+<div class="green-line"
+id="line${i}"></div>
 
 <div class="right-dot"></div>
 
@@ -508,37 +508,109 @@ id="right${i}"
 
 }
 
+enableTracing();
+
+}
+
+/* Tracing */
+
+function enableTracing(){
+
+let currentLine = null;
+let startX = 0;
+let activeRow = -1;
+
 for(let i=0;i<3;i++){
 
-const left = document.getElementById(`left${i}`);
-const right = document.getElementById(`right${i}`);
+const left =
+document.getElementById(`left${i}`);
 
-left.addEventListener("click",()=>{
+const right =
+document.getElementById(`right${i}`);
 
-selectedRow = i;
+const row =
+document.querySelectorAll(".row")[i];
 
-document.querySelectorAll(".left-img").forEach(img=>{
+left.addEventListener("pointerdown",(e)=>{
 
-img.classList.remove("correct");
+if(completedRows.includes(i)) return;
+
+activeRow = i;
+
+const rowRect =
+row.getBoundingClientRect();
+
+const leftRect =
+left.getBoundingClientRect();
+
+startX =
+(leftRect.right) - rowRect.left;
+
+currentLine =
+document.getElementById(`line${i}`);
+
+currentLine.style.left =
+startX + "px";
+
+currentLine.style.width = "0px";
 
 });
 
-left.classList.add("correct");
+row.addEventListener("pointermove",(e)=>{
+
+if(activeRow !== i) return;
+
+const rowRect =
+row.getBoundingClientRect();
+
+const moveX =
+e.clientX - rowRect.left;
+
+const width =
+moveX - startX;
+
+/* LIVE GREEN TRACE */
+
+if(width > 0){
+
+currentLine.style.borderTop =
+"5px solid green";
+
+currentLine.style.width =
+width + "px";
+
+}
 
 });
 
-right.addEventListener("click",()=>{
+row.addEventListener("pointerup",(e)=>{
 
-if(selectedRow === i){
+if(activeRow !== i) return;
+
+const rightRect =
+right.getBoundingClientRect();
+
+if(
+e.clientX >= rightRect.left &&
+e.clientX <= rightRect.right &&
+e.clientY >= rightRect.top &&
+e.clientY <= rightRect.bottom
+){
 
 handleCorrect(i);
 
-}
-else{
+}else{
 
 handleWrong(right);
 
+currentLine.style.width = "0px";
+
+currentLine.style.borderTop =
+"5px solid transparent";
+
 }
+
+activeRow = -1;
 
 });
 
@@ -583,10 +655,18 @@ const endX =
 (rightRect.left + rightRect.width/2)
 - rowRect.left;
 
+/* FINAL GREEN LINE */
+
 line.style.left = startX + "px";
+
+line.style.borderTop =
+"5px solid green";
 
 line.style.width =
 (endX - startX) + "px";
+
+document.getElementById(`left${i}`)
+.classList.add("correct");
 
 document.getElementById(`right${i}`)
 .classList.add("correct");
@@ -609,15 +689,17 @@ spread:70
 
 score++;
 
-document.getElementById("score").innerText = score;
+document.getElementById("score")
+.innerText = score;
 
-/* Next Question Only After All 3 */
+/* Next Question */
 
 if(completedRows.length === 3){
 
 if(!muted){
 
-document.getElementById("clapSound").play();
+document.getElementById("clapSound")
+.play();
 
 }
 
