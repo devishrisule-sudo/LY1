@@ -361,15 +361,15 @@ Play Again
 
 <!-- Audio -->
 
-<audio id="correctSound">
+<audio id="correctSound" preload="auto">
 <source src="./assets/correct.mp3" type="audio/mpeg">
 </audio>
 
-<audio id="wrongSound">
+<audio id="wrongSound" preload="auto">
 <source src="./assets/wrong.mp3" type="audio/mpeg">
 </audio>
 
-<audio id="clapSound">
+<audio id="clapSound" preload="auto">
 <source src="./assets/claps.mp3" type="audio/mpeg">
 </audio>
 
@@ -678,7 +678,9 @@ document.getElementById("correctSound");
 
 correct.currentTime = 0;
 
-correct.play();
+correct.volume = 1;
+
+correct.play().catch(()=>{});
 
 }
 
@@ -698,8 +700,12 @@ if(completedRows.length === 3){
 
 if(!muted){
 
-document.getElementById("clapSound")
-.play();
+const clap =
+document.getElementById("clapSound");
+
+clap.volume = 1;
+
+clap.play().catch(()=>{});
 
 }
 
@@ -728,7 +734,9 @@ document.getElementById("wrongSound");
 
 wrong.currentTime = 0;
 
-wrong.play();
+wrong.volume = 1;
+
+wrong.play().catch(()=>{});
 
 }
 
@@ -773,8 +781,12 @@ document.getElementById("endScreen")
 
 if(!muted){
 
-document.getElementById("clapSound")
-.play();
+const clap =
+document.getElementById("clapSound");
+
+clap.volume = 1;
+
+clap.play().catch(()=>{});
 
 }
 
